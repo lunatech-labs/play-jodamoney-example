@@ -4,6 +4,8 @@ import play.api.mvc._
 import play.api.data.Form
 import play.api.data.Forms._
 import org.joda.money.{Money, CurrencyUnit}
+import models.Price
+import models.MoneyConverters
 
 object Application extends Controller {
 
@@ -14,18 +16,24 @@ object Application extends Controller {
     mapping(
       "code" -> text,
       "amount" -> bigDecimal
-    )( (code, amount) => Money.of(CurrencyUnit.of(code), amount.bigDecimal) )
+    )( (code, amount) => MoneyConverters.tuple2Money(code, amount) )
      ( (money: Money) => Some(money.getCurrencyUnit.getCode, money.getAmount) )
   )
 
   def index = Action {
-    Ok(views.html.index(currencyForm.fill(Money.of(CurrencyUnit.EUR, 0))))
+    Ok(views.html.index(currencyForm.fill(Money.of(CurrencyUnit.EUR, 0)), Price.find))
   }
 
+  /**
+   * Inserts a `Money` value into the database.
+   */
   def create = Action { implicit request =>
     currencyForm.bindFromRequest.fold(
-      form => BadRequest(form.errorsAsJson),
-      money => Ok(money.toString)
+      form => BadRequest(views.html.index(form, Price.find)),
+      money => {
+        Price.insert(money)
+        Redirect(routes.Application.index)
+      }
     )
   }
   

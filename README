@@ -1,3 +1,5 @@
 # Joda Money example
 
-Sample Play framework application to demonstate using Joda Money
+Sample Play framework application to demonstate using Joda Money.
+
+This example requires Java 7.
