@@ -1,0 +1,26 @@
+@(id: String, codeField: play.api.data.Field, amountField: play.api.data.Field, args: (Symbol,Any)*)(implicit lang: play.api.i18n.Lang)
+
+@import scala.collection.JavaConverters._
+
+@label = @{ args.toMap.get('_label).getOrElse(play.api.i18n.Messages(amountField.name)) }
+
+<div class="control-group @args.toMap.get('_class) @if(codeField.hasErrors || amountField.hasErrors) {error}" id="@id">
+	<label for="@id">@label</label>
+	<div class="input">
+		<select name="@codeField.name">
+			@for(currency <- org.joda.money.CurrencyUnit.registeredCurrencies.asScala.sortBy(_.toCurrency.getDisplayName)) {
+				<option value="@currency.getCurrencyCode" @if(codeField.value == Some(currency.getCurrencyCode)) { selected }>@currency.toCurrency.getDisplayName</option>
+			}
+		</select>
+		<input name="@amountField.name" type="number" min="0" step="0.01" value="@amountField.value">
+	  <span class="help-inline">
+    @if(codeField.hasErrors || amountField.hasErrors) {
+			@for(error <- codeField.errors ++ amountField.errors) {
+				@Messages(error.message, error.args: _*)
+			}
+    } else {
+      currency amount
+    }
+		</span>
+	</div>
+</div>

@@ -1,0 +1,11 @@
+@(form: Form[org.joda.money.Money])
+
+@main("JODA Money example") {
+
+	<form method="post" action="@routes.Application.create()">
+		<p>
+			@helper.inputCurrency("price", form("code"), form("amount"), '_label -> "Price")
+			<button>Add</button>
+		</p>
+	</form>
+}

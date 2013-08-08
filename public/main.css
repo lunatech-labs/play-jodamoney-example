@@ -1,0 +1,17 @@
+body {
+ font-family: "Helvetica Neue", sans-serif;
+}
+
+.control-group {
+ margin-bottom:1em;
+}
+
+label {
+ display:block;
+ margin-bottom: 0.5em;
+}
+
+.help-inline {
+ font-size: smaller;
+ color: #999;
+}
