@@ -10,4 +10,11 @@ This includes:
 * Slick persistence using the MySQL `DECIMAL(13,3)` column type.
 
 This example requires Java 7, for the use of `java.util.Currency.getDisplayName` in the page template. To use Java 6,
-replace this with a message look-up.
+replace this with a message look-up from the `messages` file, generated on Java 7 with:
+
+```scala
+    import scala.collection.JavaConverters._
+    org.joda.money.CurrencyUnit.registeredCurrencies.asScala.map {
+      currency => s"currency.${currency.getCurrencyCode} = ${currency.toCurrency.getDisplayName}"
+    }.mkString("\n")
+```

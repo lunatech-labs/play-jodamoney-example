@@ -38,5 +38,5 @@ object Application extends Controller {
       }
     )
   }
-  
+
 }
