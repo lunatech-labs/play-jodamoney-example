@@ -2,10 +2,10 @@ package models.database
 
 import play.api.db.slick.Config.driver.simple._
 import org.joda.money.{CurrencyUnit, Money}
-import models.Price
+import models.Product
 import models.MoneyConverters._
 
-private[models] object Prices extends Table[Price]("PRICE") {
+private[models] object Products extends Table[Product]("PRODUCT") {
 
   def id = column[Long]("ID", O.PrimaryKey, O.AutoInc)
 
@@ -13,8 +13,8 @@ private[models] object Prices extends Table[Price]("PRICE") {
   def priceAmount = column[BigDecimal]("PRICE_AMOUNT", O.DBType("DECIMAL(13,2)"))
 
   def * = id.? ~ priceCode ~ priceAmount <> (
-    { p => Price(p._1, p._2 -> p._3) } ,
-    { (p: Price) => Some((p.id, p.value.getCurrencyUnit.getCode, p.value.getAmount)) })
+    { p => Product(p._1, p._2 -> p._3) } ,
+    { (p: Product) => Some((p.id, p.price.getCurrencyUnit.getCode, p.price.getAmount)) })
 
   def forInsert = * returning id
 }

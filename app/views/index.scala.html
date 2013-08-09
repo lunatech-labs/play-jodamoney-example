@@ -1,19 +1,19 @@
-@(form: Form[org.joda.money.Money], prices: List[models.Price])
+@(form: Form[org.joda.money.Money], products: List[models.Product])
 
 @main("JODA Money example") {
 
-	<h2>Add price</h2>
+	<h2>Add product</h2>
 	<form method="post" action="@routes.Application.create()">
 		<p>
-			@helper.inputCurrency("price", form("code"), form("amount"), '_label -> "")
+			@helper.inputCurrency("price", form("code"), form("amount"), '_label -> "Price")
 			<button>Add</button>
 		</p>
 	</form>
 
-	<h2>Prices</h2>
+	<h2>Products</h2>
 	<ul>
-		@for(price <- prices) {
-			<li>@price.value.toString</li>
+		@for(product <- products) {
+			<li>@product.price.toString</li>
 		}
 	</ul>
 }
