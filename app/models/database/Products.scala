@@ -9,10 +9,10 @@ private[models] object Products extends Table[Product]("PRODUCT") {
 
   def id = column[Long]("ID", O.PrimaryKey, O.AutoInc)
 
-  def priceCode = column[String]("PRICE_CODE")
+  def priceCurrency = column[String]("PRICE_CURRENCY")
   def priceAmount = column[BigDecimal]("PRICE_AMOUNT", O.DBType("DECIMAL(13,3)"))
 
-  def * = id.? ~ priceCode ~ priceAmount <> (
+  def * = id.? ~ priceCurrency ~ priceAmount <> (
     { p => Product(p._1, p._2 -> p._3) } ,
     { (p: Product) => Some((p.id, p.price.getCurrencyUnit.getCode, p.price.getAmount)) })
 
